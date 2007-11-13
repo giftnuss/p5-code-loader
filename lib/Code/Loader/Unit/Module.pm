@@ -1,18 +1,40 @@
   package Code::Loader::Unit::Module
-# **********************************
+# ***********************************
 ; our $VERSION='0.01'
 # *******************
 ; use strict; use warnings
-  
 ; use base 'Code::Loader::Unit::File'
 
 ; __PACKAGE__->mk_accessors qw/modulename namespaces/
+
+; sub new
+    { my ($self,%args) = @_
+    
+    ; $self = $self->SUPER::new(%args)
+
+    ; if( $args{'filename'} )
+        { die 'this is a todo'
+        }
+      elsif( $args{'modulename'} )
+        { die 'this ia a todo'
+        }
+      elsif( $args{'namespaces'} )
+        { $self->namespaces([@{$args{'namespaces'}}])
+        ; $self->modulename(join('::',@{$args{'namespaces'}}))
+        ; $self->filename(join('/',@{$args{'namespaces'}}) . '.pm')
+        }
+    ; $self
+    }
+
+; 1
+  
+__END__  
  
 =head2 Constructor
 
-There three different kinds to construct such an unit.
+There are three different kinds to construct such an unit.
 If there is more than one kind is used in one constructor
-call the first in following list ist really used.
+call the first one in the following list is used.
 
 =over 4
 
@@ -31,10 +53,3 @@ It means a list of strings, which when joined with '::'
 is a correct perl package name.
   
 =back 4
-
-;  
-
-; 1
-  
-__END__
-  
