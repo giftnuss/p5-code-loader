@@ -88,6 +88,14 @@
 ; sub identifier
     { # Should be unique
     }
+    
+####################################
+# Shortcuts and Aliase
+####################################
+; sub is_ready
+    { my ($self) = @_
+    ; $self->is_loaded && !$self->has_error
+    }
 
 ; 1
   
