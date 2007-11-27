@@ -1,11 +1,17 @@
   package Code::Loader::Unit::File
 # *********************************
-; our $VERSION='0.01'
+; our $VERSION='0.02'
 # *******************
 ; use strict; use warnings
 ; use base 'Code::Loader::Unit'
+
+# Changes
+# 0.2 - 2007/11/27 -- File::Monitor for change watching
+# 0.1 - initial VERSION
+
+; use File::Monitor
   
-; __PACKAGE__->mk_accessors qw/filename loadtime/
+; __PACKAGE__->mk_accessors qw/filename monitor/
  
 ; sub new
     { my ($pack,%args)=@_
@@ -16,7 +22,7 @@
             "No filename specified in constructor of class $class."
             } 
         }
-    ; my $self=$pack->SUPER::new(loadtime => 0, %args)
+    ; my $self=$pack->SUPER::new(%args)
     ; return $self
     }
 
@@ -28,18 +34,23 @@
 ; sub is_uptodate
     { my ($self)=@_
     ; return 0 unless $self->is_loaded
-    ; my $realfile = $INC{$self->filename}
     
-    # be paranoid, the file could be deleted now, in this case it is uptodate
-    ; return 1 unless -r $realfile
-      
-    ; my $filetime = (stat $realfile)[9]
-    ; return 0 if $filetime > $self->loadtime
+    ; if( my ($change) = $self->monitor->scan )
+        { # be paranoid, the file could be deleted now, in this case it is uptodate
+        # ????
+        ; return 1 if $change->deleted
+        # any other change says it is not uptodate
+        ; return 0
+        }
     ; return 1
     }
 
 # wenn im @INC Pfad eine andere Version auftaucht ist das ok?
 # Meine Antwort ist nein, ein reload verwendet den kompletten Pfad.
+# Oder doch besser ja?
+# Das Verhalten wurde geändert, da sonst ein weiterer Eintrag in %INC produziert 
+# wird / Die Funktionalität wird wohl erst richtig entwickelt wenn sie mal 
+# gebraucht wird.
 ; sub load
     { my ($self,@dirs)=@_
     ; $self->was_loaded(0)
@@ -55,9 +66,8 @@
     
 ; sub do_reload
     { my ($self)=@_
-    ; my $realfile = $INC{$self->filename}
     
-    ; $self->returnvalue(scalar do $realfile)
+    ; $self->returnvalue(scalar do $self->filename)
     ; if($@)
         { $self->add_error("Parse Error: ".$@) }
       else
@@ -77,7 +87,7 @@
         { $self->add_error("Parse Error: ".$@) 
         ; $self->is_empty(0)
         ; $self->is_loaded(1)
-        ; $self->loadtime(time)
+        ; $self->setup_file_monitor($INC{$self->filename})
         }
       # it is not an error to not exist, but nothing changed
       elsif(!defined $self->returnvalue)
@@ -87,9 +97,18 @@
         { $self->was_loaded(1)
         ; $self->loadcounter($self->loadcounter + 1)
         ; $self->is_loaded(1)
-        ; $self->loadtime(time)
+        ; $self->setup_file_monitor($INC{$self->filename})
         }
     ; return $self
+    }
+    
+; sub setup_file_monitor
+    { my ($self,$realfile) = @_
+    ; unless($self->monitor)
+        { $self->monitor ( new File::Monitor() )
+        ; $self->monitor->watch($realfile)
+        ; $self->monitor->scan
+        }
     }
 
 ; 1
