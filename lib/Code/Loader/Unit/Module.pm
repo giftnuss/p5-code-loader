@@ -7,6 +7,9 @@
 
 ; __PACKAGE__->mk_accessors qw/modulename namespaces/
 
+# TODO: wenn ein Modul bereits geladen ist sollte es nicht noch einmal
+#       geladen werden, sondern direkt als geladen eingetragen werden.
+
 ; sub new
     { my ($self,%args) = @_
     
@@ -30,6 +33,16 @@
   
 __END__  
  
+=head1 NAME
+
+Code::Loader::Unit::Module
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+This is a subclass of L<Code::Loader::Unit::File> to load real perl modules.
+
 =head2 Constructor
 
 There are three different kinds to construct such an unit.
@@ -53,3 +66,7 @@ It means a list of strings, which when joined with '::'
 is a correct perl package name.
   
 =back 4
+
+=head2 load
+
+This
