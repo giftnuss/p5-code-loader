@@ -24,7 +24,7 @@ __END__
 
 =head1 NAME
 
-Code::Loader::Unit - a chunk of code which is loaded dynamically
+Code::Loader - storage for code units
 
 =head1 VERSION
 
@@ -36,17 +36,20 @@ Version 0.01
    
    my $loaded = Code::Loader::_retrieve($unit);
 
-   # $loaded and unit are the same object
-
 =head1 DESCRIPTION
 
-=head1 TODO
+This module is only a storage for code units. Each unit class has a method
+C<identifier> which is used here as a hash key. The constructor of each unit
+needs enough arguments to create the unique identifier for each object. So when
+an unit is already loaded it could be retrieved from here.
 
 =head1 AUTHOR
 
-=head1 BUGS
+Sebastian Knapp E<lt>sk@computer-leipzig.comE<gt>
 
 =head1 SEE ALSO
+
+L<Code::Loader::Unit>
 
 =head1 COPYRIGHT & LICENSE
 
