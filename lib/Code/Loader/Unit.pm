@@ -9,17 +9,17 @@
   
 ; __PACKAGE__->mk_accessors
      ( 'is_empty'       # es gibt keine Quelle oder Quelle ist leer
-	 , 'errors'         # Laden oder initialisieren verursachte Fehler
-	 , 'is_loaded'      # Code ist bereits geladen / moeglicherweise mit Fehlern
-	 , 'was_loaded'     # Der letzte Aufruf von load hat die Datei geladen.
-	 , 'returnvalue'    # Der Rueckgabewert wenn Unit in der load Methode 
-	                    # geladen wird / auch false ist erlaubt.
-	 , 'loadattempts'   # Zaehlt wie oft versucht wurde eine Einheit zu laden.
-	 , 'loadcounter'    # Zaehlt wie oft eine Einheit geladen wurde.
+     , 'errors'         # Laden oder initialisieren verursachte Fehler
+     , 'is_loaded'      # Code ist bereits geladen / moeglicherweise mit Fehlern
+     , 'was_loaded'     # Der letzte Aufruf von load hat die Datei geladen.
+     , 'returnvalue'    # Der Rueckgabewert wenn Unit in der load Methode 
+                        # geladen wird / auch false ist erlaubt.
+     , 'loadattempts'   # Zaehlt wie oft versucht wurde eine Einheit zu laden.
+     , 'loadcounter'    # Zaehlt wie oft eine Einheit geladen wurde.
      )
 
-# Store and retrieve methode should be overwriable because in some
-# cenatrious a central storage for all units isn't appropriate.
+# Store and retrieve methode should be overwritable because in some
+# cenarious a central storage for all units isn't appropriate.
 ; sub _retrieve
     { Carp::croak("Have to be called with an object, and not with class: $_[0]")
         unless ref $_[0]
@@ -111,7 +111,6 @@ Version 0.01
 
 =head1 SYNOPSIS
 
-   # this is an abstract class so it used as
    package Code::Loader::Unit::Spreadsheet;
    use base 'Code::Loader::Unit';
 
