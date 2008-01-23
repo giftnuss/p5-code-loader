@@ -97,11 +97,20 @@
         { $self->was_loaded(1)
         ; $self->loadcounter($self->loadcounter + 1)
         ; $self->is_loaded(1)
-        ; $self->setup_file_monitor($INC{$self->filename})
+        ; $self->setup_file_monitor($self->absfilename)
         }
     ; return $self
     }
     
+# only a quick hack
+; sub absfilename
+    { my ($self)=@_
+    ; $INC{$self->filename}
+    }
+    
+################################
+# File Monitor Interface
+################################
 ; sub setup_file_monitor
     { my ($self,$realfile) = @_
     ; unless($self->monitor)
@@ -109,6 +118,14 @@
         ; $self->monitor->watch($realfile)
         ; $self->monitor->scan
         }
+    }
+    
+; sub add_dependency
+    { my $self = shift
+    ; for my $dep (@_)
+        { $self->monitor->watch($dep)
+        }
+    ; $self->monitor->scan
     }
 
 ; 1
