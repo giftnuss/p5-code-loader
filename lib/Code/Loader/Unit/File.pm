@@ -95,6 +95,7 @@
         }
       else
         { $self->was_loaded(1)
+        ; $self->is_empty(0)
         ; $self->loadcounter($self->loadcounter + 1)
         ; $self->is_loaded(1)
         ; $self->setup_file_monitor($self->absfilename)
@@ -114,7 +115,9 @@
 ; sub setup_file_monitor
     { my ($self,$realfile) = @_
     ; unless($self->monitor)
-        { $self->monitor ( new File::Monitor() )
+        {
+        ; $realfile ||= $self->absfilename
+        ; $self->monitor ( new File::Monitor::() )
         ; $self->monitor->watch($realfile)
         ; $self->monitor->scan
         }
@@ -122,6 +125,8 @@
     
 ; sub add_dependency
     { my $self = shift
+    ; $self->setup_file_monitor
+    
     ; for my $dep (@_)
         { $self->monitor->watch($dep)
         }
