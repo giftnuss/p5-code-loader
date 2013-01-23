@@ -5,7 +5,7 @@
 ; use strict; use warnings
 ; use base 'Code::Loader::Unit::File'
 
-; __PACKAGE__->mk_accessors qw/modulename namespaces/
+; __PACKAGE__->mk_accessors (qw/modulename namespaces/)
 
 # TODO: wenn ein Modul bereits geladen ist sollte es nicht noch einmal
 #       geladen werden, sondern direkt als geladen eingetragen werden.
@@ -16,7 +16,15 @@
     ; $self = $self->SUPER::new(%args)
 
     ; if( $args{'filename'} )
-        { die 'this is a todo'
+        { $args{'skipdirs'} ||= 0 # 1 ist evtl sinnvoller
+		; my ($v,$d,$n) = File::Spec->splitpath($args{'filename'})
+		; my @d = File::Spec->splitdir($d)
+		; pop @d if length($d[$#d]) == 0
+		; @d = @d[$args{'skipdirs'} ... $#d]
+		; $n =~ s/\..*//
+		; $self->namespaces([@d,$n])
+		; $self->modulename(join('::',@d,$n))
+		; $self->filename($args{'filename'})
         }
       elsif( $args{'modulename'} )
         { die 'this ia a todo'

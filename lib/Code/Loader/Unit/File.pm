@@ -11,7 +11,7 @@
 
 ; use File::Monitor
   
-; __PACKAGE__->mk_accessors qw/filename monitor/
+; __PACKAGE__->mk_accessors (qw/filename monitor/)
  
 ; sub new
     { my ($pack,%args)=@_
