@@ -16,6 +16,10 @@
     { my ($unit)=@_
     ; return $storage{$unit->identifier}
     }
+    
+; sub _empty_storage
+    { %storage = ()
+    }
 
 ; 1
   
@@ -42,6 +46,8 @@ This module is only a storage for code units. Each unit class has a method
 C<identifier> which is used here as a hash key. The constructor of each unit
 needs enough arguments to create the unique identifier for each object. So when
 an unit is already loaded it could be retrieved from here.
+
+
 
 =head1 AUTHOR
 
