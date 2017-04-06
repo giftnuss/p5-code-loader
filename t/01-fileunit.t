@@ -6,11 +6,12 @@
 ; use Test::More tests => 8
 
 # 01 -- loadable
-; BEGIN { use_ok( 'Code::Loader::Unit::File' ) }
-; diag( "Testing Code::Loader $Code::Loader::Unit::File::VERSION, Perl $], $^X" )
+; BEGIN { use_ok( 'Shari::Code::Loader::Unit::File' ) }
+; diag( "Testing Shari::Code::Loader::Unit::File " .
+        "$Code::Loader::Unit::File::VERSION, Perl $], $^X" )
 
 ; my $testfile1 = 't/code/one.pl'
-; my $unit = Code::Loader::Unit::File
+; my $unit = Shari::Code::Loader::Unit::File
     ->create(filename => $testfile1)
     
 # 02 -- unit is created but not loaded
@@ -33,13 +34,11 @@
 
 # 07 -- if no package is given the unit is used as namespace
 # this may change in future
-; is(Code::Loader::Unit::File::one(),1)
+; is(Shari::Code::Loader::Unit::File::one(),1)
 
 # 08 -- is uptodate
 ; ok($unit->is_uptodate,'is uptodate')
 
-
-
-; use Data::Dumper
-; print Dumper($unit)
+#; use Data::Dumper
+#; print Dumper($unit)
 

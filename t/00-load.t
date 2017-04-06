@@ -6,17 +6,25 @@
 ; use Test::More tests => 11
 
 ; BEGIN 
-    { use_ok( 'Code::Loader' ) 
+    { use_ok( 'Shari::Code::Loader' ) 
     ; diag( "Testing Code::Loader $Code::Loader::VERSION, Perl $], $^X" )
     }
 
-; BEGIN { use_ok( 'Code::Loader::Unit' ) }
-; BEGIN { use_ok( 'Code::Loader::Unit::File' ) }
-; BEGIN { use_ok( 'Code::Loader::Unit::Module' ) }
+; BEGIN {
+    use_ok( 'Shari::Code::Unit' );
+    use_ok( 'Shari::Code::Loader::Unit' );
+    use_ok( 'Shari::Code::Loader::Unit::File' );
+    use_ok( 'Shari::Code::Loader::Unit::Module' );
+    }
 
 ; my @accessors =
-    qw/is_empty errors is_loaded was_loaded returnvalue loadattempts
-	   loadcounter/
+    qw/is_empty 
+       errors 
+       is_loaded 
+       was_loaded 
+       returnvalue 
+       loadattempts
+       loadcounter/
        
-; ok(Code::Loader::Unit->can($_),"Accessor: $_") for @accessors
+; ok(Shari::Code::Loader::Unit->can($_),"Accessor: $_") for @accessors
 

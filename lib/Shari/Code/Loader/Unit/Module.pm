@@ -3,7 +3,7 @@
 ; our $VERSION='0.01'
 # *******************
 ; use strict; use warnings
-; use base 'Code::Loader::Unit::File'
+; use base 'Shari::Code::Loader::Unit::File'
 
 ; __PACKAGE__->mk_accessors (qw/modulename namespaces/)
 

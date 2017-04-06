@@ -3,7 +3,7 @@
 ; our $VERSION='0.02'
 # *******************
 ; use strict; use warnings
-; use base 'Code::Loader::Unit'
+; use parent 'Shari::Code::Loader::Unit'
 
 # Changes
 # 0.2 - 2007/11/27 -- File::Monitor for change watching

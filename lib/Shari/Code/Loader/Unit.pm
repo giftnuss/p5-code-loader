@@ -5,7 +5,7 @@
 ; use strict; use warnings
 ; use base 'Class::Accessor::Fast'
 ; require Carp
-; require Code::Loader
+; require Shari::Code::Loader
   
 ; __PACKAGE__->mk_accessors
      ( 'is_empty'       # es gibt keine Quelle oder Quelle ist leer
@@ -23,13 +23,13 @@
 ; sub _retrieve
     { Carp::croak("Have to be called with an object, and not with class: $_[0]")
         unless ref $_[0]
-    ; return Code::Loader::_retrieve($_[0])
+    ; return Shari::Code::Loader::_retrieve($_[0])
     }
     
 ; sub _store
     { Carp::croak("Have to be called with an object, and not with class: $_[0]")
         unless ref $_[0]
-    ; Code::Loader::_store($_[0])
+    ; Shari::Code::Loader::_store($_[0])
     }
     
 # Private real constructor
@@ -47,7 +47,6 @@
 # Public constructs a new object or retrieves a existing one.
 ; sub create
     { my ($pack,@args)=@_
-#    ; (local $Carp::CarpLevel=$Carp::CarpLevel)++
     ; my $temp=$pack->new(@args)
     ; if(my $exists=$temp->_retrieve)
        { return $exists }
