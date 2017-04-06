@@ -81,10 +81,11 @@
 ; sub do_load
     { my ($self,@dirs)=@_
     ; local @INC=(@dirs,@INC)
+    ; local $@
       
     ; $self->returnvalue(scalar do $self->filename)
     ; if($@)
-        { $self->add_error("Parse Error: ".$@) 
+        { $self->add_error("Parse Error: ".$@)
         ; $self->is_empty(0)
         ; $self->is_loaded(1)
         ; $self->setup_file_monitor($INC{$self->filename})
