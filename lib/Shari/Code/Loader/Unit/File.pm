@@ -1,5 +1,5 @@
-  package Code::Loader::Unit::File
-# *********************************
+  package Shari::Code::Loader::Unit::File
+# ***************************************
 ; our $VERSION='0.02'
 # *******************
 ; use strict; use warnings
