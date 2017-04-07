@@ -37,6 +37,10 @@
     ; $self
     }
 
+; sub identifier
+    { return $_[0]->modulename
+    }
+
 ; 1
   
 __END__  
