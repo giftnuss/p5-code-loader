@@ -11,7 +11,7 @@
 
 ; use File::Monitor
   
-; __PACKAGE__->mk_accessors (qw/filename monitor/)
+; __PACKAGE__->mk_accessors (qw/filename monitor realpath/)
  
 ; sub new
     { my ($pack,%args)=@_
@@ -28,7 +28,7 @@
 
 ; sub identifier
     { my ($self)=@_
-    ; return $self->filename
+    ; return $self->realpath || $self->filename
     }
 
 ; sub is_uptodate
@@ -88,7 +88,8 @@
         { $self->add_error("Parse Error: ".$@)
         ; $self->is_empty(0)
         ; $self->is_loaded(1)
-        ; $self->setup_file_monitor($INC{$self->filename})
+        ; $self->realpath($INC{$self->filename})
+        ; $self->setup_file_monitor
         }
       # it is not an error to not exist, but nothing changed
       elsif(!defined $self->returnvalue)
@@ -99,7 +100,8 @@
         ; $self->is_empty(0)
         ; $self->loadcounter($self->loadcounter + 1)
         ; $self->is_loaded(1)
-        ; $self->setup_file_monitor($self->absfilename)
+        ; $self->realpath($INC{$self->filename})
+        ; $self->setup_file_monitor
         }
     ; return $self
     }
@@ -114,16 +116,17 @@
 # File Monitor Interface
 ################################
 ; sub setup_file_monitor
-    { my ($self,$realfile) = @_
+    { my ($self) = @_
     ; unless($self->monitor)
         {
-        ; $realfile ||= $self->absfilename
+        ; my $realfile = $self->realpath
         ; $self->monitor ( new File::Monitor::() )
         ; $self->monitor->watch($realfile)
         ; $self->monitor->scan
         }
     }
-    
+
+# this needs more care, is it used?    
 ; sub add_dependency
     { my $self = shift
     ; $self->setup_file_monitor

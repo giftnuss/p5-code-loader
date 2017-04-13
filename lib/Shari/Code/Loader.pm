@@ -1,7 +1,7 @@
   package Shari::Code::Loader
 # ***************************
-; our $VERSION='0.02'
-# *******************
+; our $VERSION='0.03.001'
+# ***********************
 ; use strict; use warnings
 ; use File::Spec
 

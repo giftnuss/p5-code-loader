@@ -3,7 +3,7 @@
 ; use strict
 ; package main
 
-; use Test::More tests => 11
+; use Test::More tests => 12
 
 ; BEGIN 
     { use_ok( 'Shari::Code::Loader' ) 
