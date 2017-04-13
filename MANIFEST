@@ -1,0 +1,10 @@
+Build.PL
+lib/Shari/Code/Loader.pm
+lib/Shari/Code/Loader/Unit.pm
+lib/Shari/Code/Loader/Unit/File.pm
+lib/Shari/Code/Loader/Unit/Module.pm
+lib/Shari/Code/Unit.pm
+MANIFEST			This list of files
+t/00-load.t
+t/01-fileunit.t
+t/code/one.pl
