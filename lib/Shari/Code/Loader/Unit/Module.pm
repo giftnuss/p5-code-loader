@@ -7,16 +7,13 @@
 
 ; __PACKAGE__->mk_accessors (qw/modulename namespaces/)
 
-# TODO: wenn ein Modul bereits geladen ist sollte es nicht noch einmal
-#       geladen werden, sondern direkt als geladen eingetragen werden.
-
 ; sub new
     { my ($self,%args) = @_
     
     ; $self = $self->SUPER::new(%args)
 
     ; if( $args{'filename'} )
-        { $args{'skipdirs'} ||= 0 # 1 ist evtl sinnvoller
+        { $args{'skipdirs'} ||= 0 # 1 ist evtl. sinnvoller
 		; my ($v,$d,$n) = File::Spec->splitpath($args{'filename'})
 		; my @d = File::Spec->splitdir($d)
 		; pop @d if length($d[$#d]) == 0
@@ -27,7 +24,7 @@
 		; $self->filename($args{'filename'})
         }
       elsif( $args{'modulename'} )
-        { die 'this ia a todo'
+        { die 'this is a todo'
         }
       elsif( $args{'namespaces'} )
         { $self->namespaces([@{$args{'namespaces'}}])
@@ -79,6 +76,6 @@ is a correct perl package name.
   
 =back 4
 
-=head2 load
+=head2 identifier
 
-This
+The modulename is the identifier for units of this class.

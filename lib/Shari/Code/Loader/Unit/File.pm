@@ -66,7 +66,8 @@
     
 ; sub do_reload
     { my ($self)=@_
-    
+    ; local $@
+        
     ; $self->returnvalue(scalar do $self->filename)
     ; if($@)
         { $self->add_error("Parse Error: ".$@) }
@@ -105,13 +106,7 @@
         }
     ; return $self
     }
-    
-# only a quick hack
-; sub absfilename
-    { my ($self)=@_
-    ; $INC{$self->filename}
-    }
-    
+
 ################################
 # File Monitor Interface
 ################################

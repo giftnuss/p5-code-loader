@@ -68,6 +68,13 @@
 ; sub collect
     { my ($class,@ns) = @_
     ; my $name = pop @ns
+    ; my @name
+    ; if(ref $name)
+        { @name = @$name
+        }
+      else
+        { @name = ($name)
+        }
     ; my @units
     ; INC:
       foreach my $inc (@INC)
@@ -76,19 +83,25 @@
 		; next unless $_in_inc->($inc,\@ns)
 		
         ; opendir DIR, File::Spec->catdir($inc,@ns)
-        ; while(defined(my $e = readdir(DIR)))
+        ; DIR:
+          while(defined(my $e = readdir(DIR)))
             { my $entry = File::Spec->catdir($inc,@ns,$e)
             ; next unless -d $entry
             ; next if $e eq '..' or $e eq '.'
-            ; my $filename = File::Spec->catfile($entry,$name . '.pm')
-            ; next unless -f $filename
-            
-            ; my @skip = File::Spec->splitdir($inc)
-            ; shift @skip if $skip[0] eq '.'
-            ; my $unit = create Shari::Code::Loader::Unit::Module::
-                (filename => $filename, skipdirs => 0+@skip)
-            ; $unit->load unless $unit->is_uptodate
-            ; push @units, $unit
+
+            ; foreach my $name (@name) 
+                { my $filename = File::Spec->catfile($entry,$name . '.pm')
+                ; next unless -f $filename
+                
+                ; my @skip = File::Spec->splitdir($inc)
+                ; shift @skip if $skip[0] eq '.'
+                ; pop @skip unless $skip[-1]
+
+                ; my $unit = create Shari::Code::Loader::Unit::Module::
+                    (filename => $filename, skipdirs => 0+@skip)
+                ; $unit->load unless $unit->is_uptodate
+                ; push @units, $unit
+                }
             }
         }
     ; @units

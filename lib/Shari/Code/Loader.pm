@@ -12,11 +12,13 @@
   
 ; sub _store
     { my ($unit)=@_
+    #; warn "Store " . $unit->identifier ."\n"
     ; return $storage{$unit->identifier}=$unit
     }
 
 ; sub _retrieve
     { my ($unit)=@_
+    #; warn "Retrieve " . $unit->identifier ."\n"
     ; return $storage{$unit->identifier}
     }
     
