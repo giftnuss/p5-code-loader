@@ -1,19 +1,18 @@
   package Shari::Code::Loader::Unit::File
 # ***************************************
-; our $VERSION='0.02'
+; our $VERSION='0.03'
 # *******************
 ; use strict; use warnings
 ; use parent 'Shari::Code::Loader::Unit'
 
 # Changes
+# 0.3 - hand made accessors
 # 0.2 - 2007/11/27 -- File::Monitor for change watching
 # 0.1 - initial VERSION
 
 ; use File::Monitor
-  
-; __PACKAGE__->mk_accessors (qw/filename monitor realpath/)
  
-; sub new
+; sub _new
     { my ($pack,%args)=@_
     ; my $class = ref $pack || $pack
     ; if($class eq __PACKAGE__)
@@ -22,10 +21,18 @@
             "No filename specified in constructor of class $class."
             } 
         }
-    ; my $self=$pack->SUPER::new(%args)
+    ; my $self = $pack->SUPER::_new(%args)
     ; return $self
     }
-
+ 
+ sub monitor { $_[0]->{'monitor'} }
+ 
+ sub filename { $_[0]->{'filename'} }
+ sub set_filename { $_[0]->{'filename'} = $_[1] }
+ 
+ sub realpath { $_[0]->{'realpath'} }
+ sub set_realpath { $_[0]->{'realpath'} = $_[1] }
+ 
 ; sub identifier
     { my ($self)=@_
     ; return $self->realpath || $self->filename
@@ -53,7 +60,7 @@
 # gebraucht wird.
 ; sub load
     { my ($self,@dirs)=@_
-    ; $self->was_loaded(0)
+    ; $self->reset_was_loaded
     ; return $self if $self->is_uptodate
     ; $self->loadattempts($self->loadattempts + 1)
     
@@ -68,12 +75,12 @@
     { my ($self)=@_
     ; local $@
         
-    ; $self->returnvalue(scalar do $self->filename)
+    ; $self->set_returnvalue(scalar do $self->filename)
     ; if($@)
         { $self->add_error("Parse Error: ".$@) }
       else
-        { $self->was_loaded(1)
-        ; $self->loadcounter($self->loadcounter + 1)
+        { $self->set_was_loaded
+        ; $self->inc_loadcount
         }
 
     ; return $self
@@ -84,12 +91,12 @@
     ; local @INC=(@dirs,@INC)
     ; local $@
       
-    ; $self->returnvalue(scalar do $self->filename)
+    ; $self->set_returnvalue(scalar do $self->filename)
     ; if($@)
         { $self->add_error("Parse Error: ".$@)
-        ; $self->is_empty(0)
-        ; $self->is_loaded(1)
-        ; $self->realpath($INC{$self->filename})
+        ; $self->set_not_empty
+        ; $self->set_is_loaded
+        ; $self->set_realpath($INC{$self->filename})
         ; $self->setup_file_monitor
         }
       # it is not an error to not exist, but nothing changed
@@ -97,11 +104,11 @@
         {  
         }
       else
-        { $self->was_loaded(1)
-        ; $self->is_empty(0)
-        ; $self->loadcounter($self->loadcounter + 1)
-        ; $self->is_loaded(1)
-        ; $self->realpath($INC{$self->filename})
+        { $self->set_was_loaded
+        ; $self->set_not_empty
+        ; $self->inc_loadcount
+        ; $self->set_is_loaded
+        ; $self->set_realpath($INC{$self->filename})
         ; $self->setup_file_monitor
         }
     ; return $self
@@ -115,7 +122,7 @@
     ; unless($self->monitor)
         {
         ; my $realfile = $self->realpath
-        ; $self->monitor ( new File::Monitor::() )
+        ; $self->{'monitor'} = new File::Monitor::()
         ; $self->monitor->watch($realfile)
         ; $self->monitor->scan
         }

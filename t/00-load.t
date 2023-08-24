@@ -3,7 +3,7 @@
 ; use strict
 ; package main
 
-; use Test::More tests => 12
+; use Test::More tests => 11
 
 ; BEGIN 
     { use_ok( 'Shari::Code::Loader' ) 
@@ -18,13 +18,12 @@
     }
 
 ; my @accessors =
-    qw/is_empty 
-       errors 
+    qw/is_empty
        is_loaded 
        was_loaded 
        returnvalue 
        loadattempts
-       loadcounter/
+       loadcount/
        
 ; ok(Shari::Code::Loader::Unit->can($_),"Accessor: $_") for @accessors
 

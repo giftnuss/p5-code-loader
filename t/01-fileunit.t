@@ -3,16 +3,18 @@
 ; use strict
 ; package main
 
-; use Test::More tests => 8
+; use Test::More tests => 10
 
 # 01 -- loadable
 ; BEGIN { use_ok( 'Shari::Code::Loader::Unit::File' ) }
 ; diag( "Testing Shari::Code::Loader::Unit::File " .
         "$Code::Loader::Unit::File::VERSION, Perl $], $^X" )
 
-; my $testfile1 = 't/code/one.pl'
+; my $testfile1 = './t/code/one.pl'
 ; my $unit = Shari::Code::Loader::Unit::File
     ->create(filename => $testfile1)
+    
+; isa_ok($unit, 'Shari::Code::Loader::Unit::File')
     
 # 02 -- unit is created but not loaded
 ; ok($unit->is_empty,'new units are empty')
@@ -32,9 +34,11 @@
 
 ; $unit->load
 
+; ok($unit->is_ready,"unit is ready")
+
 # 07 -- if no package is given the unit is used as namespace
 # this may change in future
-; is(Shari::Code::Loader::Unit::File::one(),1)
+; is(Shari::Code::Loader::Unit::File::one(),1,"unit performs well")
 
 # 08 -- is uptodate
 ; ok($unit->is_uptodate,'is uptodate')
